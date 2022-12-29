@@ -16,26 +16,29 @@ function PlayGame() {
     y: scale * scale,
   });
   const [snake, setSnake] = useState([
+    { x: 0, y: 1 },
     { x: 0, y: 0 },
-    // { x: 0, y: 1 },
   ]);
   const [food, setFood] = useState({
     x: Math.round((size.x / scale - 1) * Math.random()),
     y: Math.round((size.y / scale - 1) * Math.random()),
   });
-  const [direction, setDirection] = useState({ x: 0, y: 0 });
+  const [direction, setDirection] = useState({ x: 0, y: 1 });
   const [gameOver, setGameOver] = useState(false);
 
   // a function which resets everything
   const start = () => {
     console.log("starting");
     setScore(0);
-    setSnake([{ x: 0, y: 0 }]);
+    setSnake([
+      { x: 0, y: 1 },
+      { x: 0, y: 0 },
+    ]);
     setFood({
       x: Math.round((size.x / scale - 1) * Math.random()),
       y: Math.round((size.y / scale - 1) * Math.random()),
     });
-    setDirection({ x: 0, y: 0 });
+    setDirection({ x: 0, y: 1 });
     setSpeed();
     setGameOver(false);
   };
@@ -48,10 +51,10 @@ function PlayGame() {
 
   // a function which generates random foods
   const getFood = () => {
-    setFood({
+    return {
       x: Math.round((size.x / scale - 1) * Math.random()),
       y: Math.round((size.y / scale - 1) * Math.random()),
-    });
+    };
   };
 
   // a function which detects the direction
@@ -73,7 +76,7 @@ function PlayGame() {
   };
 
   // a function which detects collison
-  const collison = (head = snake[0], snakeCopy = snake) => {
+  const collison = (head, snk = snake) => {
     if (
       head.x * scale >= size.x ||
       head.x < 0 ||
@@ -84,32 +87,26 @@ function PlayGame() {
       return true;
     }
 
-    // function col1(snakeCopy){
-    //   for(const body of snakeCopy){
-    //       if (head.x === body.x && head.y === body.y){
-    //           console.log("collison");
-    //           return true
-    //       }
-    //   }
-    // }
-    // col1(snakeCopy)
-    // for (const body of snakeCopy) {
-    //   if (head.x === body.x && head.y === body.y) {
-    //     console.log("collison");
-    //     return true;
-    //   }
-    // }
+    if (!easy) {
+      for (const body of snk) {
+        if (head.x === body.x && head.y === body.y) {
+          console.log("body collison");
+          return true;
+        }
+      }
+    }
     return false;
   };
 
   // a function which detects eating
   const eatFood = (snake) => {
     if (snake[0].x === food.x && snake[0].y === food.y) {
-      getFood();
+      let newFood = getFood();
       setScore(score + 1);
-      while (collison(food, snake)) {
-        getFood();
+      while (collison(newFood, snake)) {
+        newFood = getFood();
       }
+      setFood(newFood);
       return true;
     }
     return false;
@@ -141,6 +138,7 @@ function PlayGame() {
     snake.forEach((element, index) => {
       if (index === 0) {
         cancon.fillStyle = "yellow";
+        cancon.strokeStyle = "pink";
         cancon.fillRect(element.x, element.y, 1, 1);
       } else {
         cancon.fillStyle = "green";
@@ -157,7 +155,7 @@ function PlayGame() {
   return (
     // main div
     <div
-      className="outline-none bg-black"
+      className="outline-none bg-slate-900"
       onKeyDown={(e) => {
         console.log(e.key);
         move(e.key);
@@ -168,7 +166,7 @@ function PlayGame() {
         {/* canvas div */}
         <div className="flex justify-center">
           <canvas
-            className="bg-pink border-white border-4 m-8 p-1"
+            className="bg-pink border-zinc-400 border-8 border-double m-8 p-1"
             id="canvas"
             ref={canvas}
             width={size.x}
@@ -186,7 +184,7 @@ function PlayGame() {
             start
           </button>
           {gameOver ? (
-            <h1 className="font-mono uppercase">game over</h1>
+            <h1 className="font-mono uppercase">{`${score} [busted]`}</h1>
           ) : (
             <h1 className="font-mono text-xl">{score}</h1>
           )}
@@ -255,10 +253,7 @@ function PlayGame() {
               onChange={() => {
                 setAutoSize(!autoSize);
                 setSize({ x: scale * scale, y: scale * scale });
-                setFood({
-                  x: Math.round((size.x / scale - 1) * Math.random()),
-                  y: Math.round((size.y / scale - 1) * Math.random()),
-                });
+                setFood(getFood());
               }}
               color="success"
             />
@@ -266,7 +261,7 @@ function PlayGame() {
           <div className="flex items-center">
             <h1 className="font-mono uppercase">easy mode</h1>
             <Switch
-              disabled
+              
               checked={easy}
               onChange={() => {
                 setEasy(!easy);

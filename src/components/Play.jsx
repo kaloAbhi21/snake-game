@@ -4,9 +4,9 @@ import PlayGame from "./PlayGame";
 
 function Play() {
   return (
-    <div className="bg-black h-screen">
+    <div className="bg-slate-900 h-screen">
       <Navbar2 />
-      <PlayGame scale={Math.sqrt(619)} speed/>
+      <PlayGame scale={Math.sqrt(619)} speed />
     </div>
   );
 }
