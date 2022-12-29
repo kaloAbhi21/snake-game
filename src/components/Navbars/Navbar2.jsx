@@ -14,14 +14,14 @@ function Navbar2() {
         >
           snakers
         </h1>
-        {/* <h1
-          className="text-white uppercase font-mono text-lg cursor-pointer"
+        <h1
+          className="text-white uppercase font-mono hover:text-green-400 text-lg cursor-pointer"
           onClick={() => {
             navigator("/");
           }}
         >
           back
-        </h1> */}
+        </h1>
       </div>
     </div>
   );

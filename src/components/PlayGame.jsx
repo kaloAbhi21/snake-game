@@ -175,28 +175,27 @@ function PlayGame() {
         </div>
         {/* start - status - reset */}
         <div className="flex justify-around items-center">
-          <button
-            className="uppercase font-mono rounded px-4 py-1 outline-none hover:bg-green-800 hover:text-black"
+          <h1
+            className="uppercase font-mono hover:text-green-400 cursor-pointer text-lg"
             onClick={() => {
               setSpeed(speedx * 10);
             }}
           >
             start
-          </button>
+          </h1>
           {gameOver ? (
             <h1 className="font-mono uppercase">{`${score} [busted]`}</h1>
           ) : (
             <h1 className="font-mono text-xl">{score}</h1>
           )}
-
-          <button
-            className="uppercase font-mono rounded px-4 py-1 outline-none hover:bg-green-800 hover:text-black"
+          <h1
+            className="uppercase font-mono hover:text-green-400 cursor-pointer text-lg"
             onClick={() => {
               start();
             }}
           >
             reset
-          </button>
+          </h1>
         </div>
         {/* speed slider div with label */}
         <div className="flex flex-col justify-center">
@@ -261,7 +260,6 @@ function PlayGame() {
           <div className="flex items-center">
             <h1 className="font-mono uppercase">easy mode</h1>
             <Switch
-              
               checked={easy}
               onChange={() => {
                 setEasy(!easy);

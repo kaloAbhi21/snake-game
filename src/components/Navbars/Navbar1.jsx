@@ -18,14 +18,6 @@ function Navbar1() {
           >
             play now
           </h1>
-          {/* <h1
-            className="text-white uppercase font-mono cursor-pointer hover:text-green-400"
-            onClick={() => {
-              navigator("/dual");
-            }}
-          >
-            dual mode
-          </h1> */}
         </div>
       </div>
     </div>
